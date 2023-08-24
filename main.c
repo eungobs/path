@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "monty.h"
 
 typedef struct stack_s
 {
@@ -12,7 +11,7 @@ typedef struct stack_s
 
 stack_t *stack = NULL;
 
-void push(stack_t **stack, int value, unsigned int line_number)
+void push(int value)
 {
     stack_t *new_node = malloc(sizeof(stack_t));
     if (!new_node)
@@ -23,20 +22,20 @@ void push(stack_t **stack, int value, unsigned int line_number)
 
     new_node->n = value;
     new_node->prev = NULL;
-    new_node->next = *stack;
+    new_node->next = stack;
 
-    if (*stack)
-        (*stack)->prev = new_node;
+    if (stack)
+        stack->prev = new_node;
 
-    *stack = new_node;
+    stack = new_node;
 }
 
-void pall(stack_t **stack, unsigned int line_number)
+void pall()
 {
-  stack_t *current = *stack;
+    stack_t *current = stack;
     while (current)
     {
-        fprintf("%d\n", current->n);
+        printf("%d\n", current->n);
         current = current->next;
     }
 }
@@ -46,14 +45,14 @@ int main(int argc, char *argv[])
     if (argc != 2)
     {
         fprintf(stderr, "USAGE: %s file\n", argv[0]);
-        return (EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     FILE *file = fopen(argv[1], "r");
     if (!file)
     {
         fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        return (EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     char *line = NULL;
@@ -66,25 +65,29 @@ int main(int argc, char *argv[])
         char opcode[10];
         int value;
 
-       if (sscanf(line, "%9s %d", opcode, &value) == 2)
+        if (sscanf(line, "%9s %d", opcode, &value) == 2)
         {
             if (strcmp(opcode, "push") == 0)
-                push(&stack, value, line_number);
-            
+                push(value);
+            // Add other opcode cases here
             else
             {
                 fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+                free(line);
+                fclose(file);
                 exit(EXIT_FAILURE);
             }
         }
         else if (sscanf(line, "%9s", opcode) == 1)
         {
             if (strcmp(opcode, "pall") == 0)
-                pall(&stack, line_number);
-            
+                pall();
+            // Add other opcode cases here
             else
             {
                 fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+                free(line);
+                fclose(file);
                 exit(EXIT_FAILURE);
             }
         }
@@ -94,5 +97,5 @@ int main(int argc, char *argv[])
 
     free(line);
     fclose(file);
-    return (0);
+    return 0;
 }
