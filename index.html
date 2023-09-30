@@ -6,68 +6,51 @@
   <title>Weather Forecast</title>
   <style>
     body {
-        background-image: url('https://th.bing.com/th/id/R.9ed49cae8f224a9dfd64e6a8083ae75c?rik=YgQ1cMDjIgjJFw&riu=http%3a%2f%2fwww.wallpaperbetter.com%2fwallpaper%2f636%2f627%2f698%2fbeautiful-sunset-sun-sea-waves-beach-clouds-2K-wallpaper.jpg&ehk=oGbC6aRH7Lrwe1iYdtHlgTzdIrP0oNySDcjZQTQ%2bbQw%3d&risl=&pid=ImgRaw&r=0'); /* Replace with the actual URL of your image */
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-      background-color: blue; 
+      background-image: url('https://th.bing.com/th/id/R.9ed49cae8f224a9dfd64e6a8083ae75c?rik=YgQ1cMDjIgjJFw&riu=http%3a%2f%2fwww.wallpaperbetter.com%2fwallpaper%2f636%2f627%2f698%2fbeautiful-sunset-sun-sea-waves-beach-clouds-2K-wallpaper.jpg&ehk=oGbC6aRH7Lrwe1iYdtHlgTzdIrP0oNySDcjZQTQ%2bbQw%3d&risl=&pid=ImgRaw&r=0');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: blue;
       display: flex;
-      justify-content: center; 
-      align-items: center; 
-      height: 100vh; 
-      margin: 0; 
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-weight: bold;
     }
 
-    
-    .border-container {
-      border: 2px solid #333;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* Set the text color to red for specific elements */
+    .red-text {
+      color: red;
     }
-
-    .weather-container {
-      text-align: center;
-      padding: 20px;
-    }
-
-    
   </style>
 </head>
 <body>
-  <div class="border-container">
-    <div class="weather-container">
-      <h1>Weather Forecast</h1>
-      <div class="city-input">
-        <input type="text" id="cityInput" placeholder="Enter a city">
-        <button id="searchBtn">Search</button>
-      </div>
-      <div class="current-location">
-        <button id="getLocationBtn">Get Current Location</button>
-      </div>
-      <div class="sun-emoji" id="sunEmoji">☀️</div>
-      <div class="current-time" id="currentTime">Current Time: 00:00</div>
-      <div class="current-date" id="currentDate"></div>
-      <div class="weather-card">
-        <div class="weather-info">
-          <p id="weatherLocation"></p>
-          <p id="temperature"></p>
-          <p id="humidity"></p>
-        </div>
-      </div>
-      <div class="temperature-overlay" id="temperatureOverlay">
-        <p id="temperatureValue">Temperature: 30°C <span class="temperature-unit" id="unitToggle">| °F</span></p>
-      </div>
-      <p>Weather data provided by OpenWeatherMap</p>
-      <p>Weather created by <a href="https://github.com/eungobs/my-projects.git">eungobs</a> - @2023</p>
+  <h1>Weather Forecast</h1>
+  <div class="city-input">
+    <input type="text" id="cityInput" placeholder="Enter a city">
+    <button id="searchBtn">Search</button>
+  </div>
+  <div class="current-location">
+    <button id="getLocationBtn">Get Current Location</button>
+  </div>
+  <div class="sun-emoji" id="sunEmoji">☀️</div>
+  <div class="current-time red-text" id="currentTime">Current Time: 00:00</div>
+  <div class="current-date red-text" id="currentDate"></div>
+  <div class="weather-card">
+    <div class="weather-info">
+      <p id="weatherLocation"></p>
+      <p class="red-text" id="temperature"></p>
+      <p class="red-text" id="humidity"></p>
     </div>
-  </div> 
+  </div>
+  <div class="temperature-overlay" id="temperatureOverlay">
+    <p id="temperatureValue" class="red-text">Temperature: 30°C <span class="temperature-unit" id="unitToggle">| °F</span></p>
+  </div>
+  <p class="red-text">Weather data provided by OpenWeatherMap</p>
+  <p class="red-text">Weather created by <a href="https://github.com/eungobs/path.git">eungobs</a> - @2023</p>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const cityInput = document.getElementById("cityInput");
@@ -83,7 +66,6 @@
       const unitToggle = document.getElementById("unitToggle");
       let isCelsius = true;
 
-      
       const apiKey = "3ed565296c19775878a64c31457d90b2";
       const worldTimeApiKey = "3ed565296c19775878a64c31457d90b2";
 
@@ -91,7 +73,7 @@
         const city = cityInput.value;
         if (city) {
           fetchWeather(city);
-          fetchCityTime(city); 
+          fetchCityTime(city);
         }
       });
 
@@ -101,7 +83,7 @@
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             fetchWeatherByCoordinates(latitude, longitude);
-            fetchCityTimeByCoordinates(latitude, longitude); 
+            fetchCityTimeByCoordinates(latitude, longitude);
           }, (error) => {
             console.error("Error getting current location:", error);
           });
@@ -116,25 +98,27 @@
       });
 
       function fetchWeather(city) {
-        const units = isCelsius ? "metric" : "imperial";
-        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
+  const units = isCelsius ? "metric" : "imperial";
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`;
 
-        fetch(apiUrl)
-          .then(response => response.json())
-          .then(data => {
-            weatherLocation.textContent = `Weather in ${data.name}, ${data.sys.country}`;
-            temperature.textContent = `Temperature: ${data.main.temp}°${isCelsius ? "C" : "F"}`;
-            humidity.textContent = `Humidity: ${data.main.humidity}%`;
-            temperatureOverlay.style.display = "block";
-            temperatureOverlay.textContent = `Temperature: ${data.main.temp}°${isCelsius ? "C" : "F"}`;
-            updateWeatherEmoji(data.weather[0].main);
-            updateCurrentDate();
-          })
-          .catch(error => {
-            console.error("Error fetching weather data:", error);
-            temperatureOverlay.style.display = "none";
-          });
-      }
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      weatherLocation.textContent = `Weather in ${data.name}, ${data.sys.country}`;
+      const roundedTemperature = Math.round(data.main.temp); // Round the temperature
+      temperature.textContent = `Temperature: ${roundedTemperature}°${isCelsius ? "C" : "F"}`;
+      humidity.textContent = `Humidity: ${data.main.humidity}%`;
+      temperatureOverlay.style.display = "block";
+      temperatureOverlay.textContent = `Temperature: ${roundedTemperature}°${isCelsius ? "C" : "F"}`;
+      updateWeatherEmoji(data.weather[0].main);
+      updateCurrentDate();
+    })
+    .catch(error => {
+      console.error("Error fetching weather data:", error);
+      temperatureOverlay.style.display = "none";
+    });
+}
+
 
       function fetchWeatherByCoordinates(latitude, longitude) {
         const units = isCelsius ? "metric" : "imperial";
@@ -240,3 +224,5 @@
   </script>
 </body>
 </html>
+ 
+      
