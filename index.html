@@ -66,8 +66,9 @@
       const unitToggle = document.getElementById("unitToggle");
       let isCelsius = true;
 
-      const apiKey = "3ed565296c19775878a64c31457d90b2";
-      const worldTimeApiKey = "3ed565296c19775878a64c31457d90b2";
+      const apiKey = process.env.OPENWEATHER_API_KEY;
+      const worldTimeApiKey = process.env.WORLDTIME_API_KEY;
+
 
       searchBtn.addEventListener("click", () => {
         const city = cityInput.value;
